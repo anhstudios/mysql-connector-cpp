@@ -1109,10 +1109,26 @@ MySQL_Prepared_Statement::getMaxRows()
 /* {{{ MySQL_Prepared_Statement::getMoreResults() -U- */
 bool
 MySQL_Prepared_Statement::getMoreResults()
-{
-	checkClosed();
-	throw MethodNotImplementedException("MySQL_Prepared_Statement::getMoreResults");
-	return false; // fool compilers
+{	
+	CPP_ENTER("MySQL_Statement::getMaxRows"); 
+	CPP_INFO_FMT("this=%p", this); 
+	
+	checkClosed(); 
+	
+	if (proxy->more_results()) { 
+		int next_result = proxy->next_result(); 
+		if (next_result > 0) { 
+			CPP_ERR_FMT("Error during getMoreResults : %d:(%s) %s", proxy->errNo(), proxy->sqlstate().c_str(), proxy->error().c_str()); 
+			sql::mysql::util::throwSQLException(*proxy.get()); 
+		} else if (next_result == 0) { 
+	
+			return proxy->field_count() != 0; 
+		} else if (next_result == -1) { 
+			throw sql::SQLException("Impossible! more_results() said true, next_result says no more results"); 
+		} 
+	} 
+	
+	return false;
 }
 /* }}} */
 
