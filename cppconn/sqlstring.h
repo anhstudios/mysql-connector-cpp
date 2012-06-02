@@ -35,7 +35,14 @@ namespace sql
 {
 	class CPPCONN_PUBLIC_FUNC SQLString
 	{
+#ifdef WIN32
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
 		std::string realStr;
+#ifdef WIN32
+#pragma warning(pop)
+#endif
 
 	public:
 #ifdef _WIN32

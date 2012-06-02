@@ -58,7 +58,14 @@ class CPPCONN_PUBLIC_FUNC SQLException : public std::runtime_error
 #pragma warning(pop)
 #endif
 protected:
+#ifdef WIN32
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
 	const std::string sql_state;
+#ifdef WIN32
+#pragma warning(pop)
+#endif
 	const int errNo;
 
 public:
