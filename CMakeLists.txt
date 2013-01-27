@@ -7,16 +7,16 @@
 # conditions of the GPLv2 as it is applied to this software, see the
 # FLOSS License Exception
 # <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
 # by the Free Software Foundation; version 2 of the License.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 # for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
@@ -31,9 +31,9 @@ SET(MYSQLCPPCONN_SOVERSION "6")
 
 IF(WIN32)
 # We need this for mysqlcppconn_EXPORTS needed for the static build
-	cmake_minimum_required(VERSION 2.6.2)
+    cmake_minimum_required(VERSION 2.6.2)
 ELSE(WIN32)
-	cmake_minimum_required(VERSION 2.6)
+    cmake_minimum_required(VERSION 2.6)
 ENDIF(WIN32)
 
 #-----------------
@@ -50,44 +50,44 @@ MESSAGE(STATUS "Environment link flags: ${MYSQLCPPCONN_LINK_FLAGS_ENV}")
 SET(MYSQLCPPCONN_ICU_ENABLE 0 CACHE BOOL "development only: search icu although we do not make use of it yet.")
 
 IF(MYSQLCPPCONN_ICU_ENABLE)
-	SET(MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
-	SET(MYSQLCPPCONN_ICU_LIBRARY)
-	SET(MYSQLCPPCONN_ICU_INCLUDE)
+    SET(MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
+    SET(MYSQLCPPCONN_ICU_LIBRARY)
+    SET(MYSQLCPPCONN_ICU_INCLUDE)
 
-	FIND_PROGRAM (MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE icu-config)
+    FIND_PROGRAM (MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE icu-config)
 
-	IF (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
-		SET (MYSQLCPPCONN_ICU_FOUND FALSE)
-			MESSAGE(STATUS "icu-config not found")
-	ELSE (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
+    IF (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
+        SET (MYSQLCPPCONN_ICU_FOUND FALSE)
+            MESSAGE(STATUS "icu-config not found")
+    ELSE (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
 
-		EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --ldflags-libsonly"
-		OUTPUT_VARIABLE MYSQLCPPCONN_ICU_LIBRARY
-		RETURN_VALUE ERROR_CODE
-		)
+        EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --ldflags-libsonly"
+        OUTPUT_VARIABLE MYSQLCPPCONN_ICU_LIBRARY
+        RETURN_VALUE ERROR_CODE
+        )
 
-		EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --cppflags-searchpath|sed s/^-I//"
-		OUTPUT_VARIABLE MYSQLCPPCONN_ICU_INCLUDE
-		RETURN_VALUE ERROR_CODE
-		)
+        EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --cppflags-searchpath|sed s/^-I//"
+        OUTPUT_VARIABLE MYSQLCPPCONN_ICU_INCLUDE
+        RETURN_VALUE ERROR_CODE
+        )
 
-		EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --ldflags-searchpath|sed s/^-L//"
-		OUTPUT_VARIABLE MYSQLCPPCONN_ICU_LDLIB
-		RETURN_VALUE ERROR_CODE
-		)
+        EXEC_PROGRAM ("${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE} --ldflags-searchpath|sed s/^-L//"
+        OUTPUT_VARIABLE MYSQLCPPCONN_ICU_LDLIB
+        RETURN_VALUE ERROR_CODE
+        )
 
-		IF (MYSQLCPPCONN_ICU_LIBRARY)
-			SET (MYSQLCPPCONN_ICU_FOUND TRUE)
-		ENDIF (MYSQLCPPCONN_ICU_LIBRARY)
+        IF (MYSQLCPPCONN_ICU_LIBRARY)
+            SET (MYSQLCPPCONN_ICU_FOUND TRUE)
+        ENDIF (MYSQLCPPCONN_ICU_LIBRARY)
 
-		MESSAGE(STATUS "ICU::CONFIG: ${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE}")
-		MESSAGE(STATUS "ICU::LIBRARY: ${MYSQLCPPCONN_ICU_LIBRARY}")
-		MESSAGE(STATUS "ICU::INCLUDE: ${MYSQLCPPCONN_ICU_INCLUDE}")
-		MESSAGE(STATUS "ICU::LDLIB: ${MYSQLCPPCONN_ICU_LDLIB}")
+        MESSAGE(STATUS "ICU::CONFIG: ${MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE}")
+        MESSAGE(STATUS "ICU::LIBRARY: ${MYSQLCPPCONN_ICU_LIBRARY}")
+        MESSAGE(STATUS "ICU::INCLUDE: ${MYSQLCPPCONN_ICU_INCLUDE}")
+        MESSAGE(STATUS "ICU::LDLIB: ${MYSQLCPPCONN_ICU_LDLIB}")
 
-		INCLUDE_DIRECTORIES(${MYSQLCPPCONN_ICU_INCLUDE})
-		LINK_DIRECTORIES(${MYSQLCPPCONN_ICU_LDLIB})
-	ENDIF (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
+        INCLUDE_DIRECTORIES(${MYSQLCPPCONN_ICU_INCLUDE})
+        LINK_DIRECTORIES(${MYSQLCPPCONN_ICU_LDLIB})
+    ENDIF (NOT MYSQLCPPCONN_ICU_CONFIG_EXECUTABLE)
 ENDIF(MYSQLCPPCONN_ICU_ENABLE)
 #-----------------
 
@@ -95,7 +95,7 @@ ENDIF(MYSQLCPPCONN_ICU_ENABLE)
 # BOOST
 SET(ENV_BOOST $ENV{BOOST_ROOT})
 IF(NOT BOOST_ROOT AND ENV_BOOST)
-	SET(BOOST_ROOT ${ENV_BOOST})
+    SET(BOOST_ROOT ${ENV_BOOST})
 ENDIF(NOT BOOST_ROOT AND ENV_BOOST)
 
 IF(NOT BOOST_ROOT AND WIN32)
@@ -109,12 +109,12 @@ SET(Boost_USE_STATIC_LIBS TRUE)
 #FIND_PACKAGE(Boost COMPONENTS ${MYSQLCPPCONN_BOOST_COMPONENTS})
 FIND_PACKAGE(Boost)
 IF(NOT Boost_FOUND)
-	# Try dynamic
-	set(Boost_USE_STATIC_LIBS FALSE)
-	FIND_PACKAGE(Boost COMPONENTS ${MYSQLCPPCONN_BOOST_COMPONENTS})
-	IF(NOT Boost_FOUND)
-		MESSAGE(FATAL_ERROR "Boost or some of its libraries found. If not in standard place please set -DBOOST_ROOT:STRING=")
-	ENDIF(NOT Boost_FOUND)
+    # Try dynamic
+    set(Boost_USE_STATIC_LIBS FALSE)
+    FIND_PACKAGE(Boost COMPONENTS ${MYSQLCPPCONN_BOOST_COMPONENTS})
+    IF(NOT Boost_FOUND)
+        MESSAGE(FATAL_ERROR "Boost or some of its libraries found. If not in standard place please set -DBOOST_ROOT:STRING=")
+    ENDIF(NOT Boost_FOUND)
 ENDIF(NOT Boost_FOUND)
 
 SET(MYSQLCPPCONN_BOOST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
@@ -125,6 +125,14 @@ SET(MYSQLCPPCONN_BOOST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${MYSQLCPPCONN_BOOST_INCLUDE_DIRS})
 MESSAGE(STATUS "BOOST_INCLUDE_DIRS=${MYSQLCPPCONN_BOOST_INCLUDE_DIRS}")
 
+#-----------------
+
+option(DISABLE_ITERATOR_DEBUGGING
+    "Disables iterator debugging" OFF)
+
+if (WIN32 AND DISABLE_ITERATOR_DEBUGGING)
+    add_definitions(-D_HAS_ITERATOR_DEBUGGING=0)
+endif()
 
 #-----------------
 
@@ -143,21 +151,21 @@ INCLUDE(CheckTypeSize)
 #
 SET(MYSQLCPPCONN_STLPORT_ENABLE 0 CACHE BOOL "stlport-enabled")
 IF(MYSQLCPPCONN_STLPORT_ENABLE)
-	MESSAGE(STATUS "Looking for STLPort")
-	FIND_PATH(STLPORT_INCLUDE_DIR stl_user_config.h
-			$ENV{STLPORT_INCLUDE_DIR}
-			/usr/include/stlport
-			/usr/local/include/stlport)
-	IF(STLPORT_INCLUDE_DIR)
-		MESSAGE(STATUS "Using STLPort from : ${STLPORT_INCLUDE_DIR}")
+    MESSAGE(STATUS "Looking for STLPort")
+    FIND_PATH(STLPORT_INCLUDE_DIR stl_user_config.h
+            $ENV{STLPORT_INCLUDE_DIR}
+            /usr/include/stlport
+            /usr/local/include/stlport)
+    IF(STLPORT_INCLUDE_DIR)
+        MESSAGE(STATUS "Using STLPort from : ${STLPORT_INCLUDE_DIR}")
 
-		INCLUDE_DIRECTORIES(STLPORT_INCLUDE_DIR)
-		SET(MYSQLCPPCONN_STLPORT_LIB "stlport")
-	ELSE(STLPORT_INCLUDE_DIR)
-		MESSAGE(FATAL_ERROR "STLPORT not found. Please set \$ENV{STLPORT_INCLUDE_DIR} if installed in non-standard location")
-	ENDIF(STLPORT_INCLUDE_DIR)
+        INCLUDE_DIRECTORIES(STLPORT_INCLUDE_DIR)
+        SET(MYSQLCPPCONN_STLPORT_LIB "stlport")
+    ELSE(STLPORT_INCLUDE_DIR)
+        MESSAGE(FATAL_ERROR "STLPORT not found. Please set \$ENV{STLPORT_INCLUDE_DIR} if installed in non-standard location")
+    ENDIF(STLPORT_INCLUDE_DIR)
 ELSE(MYSQLCPPCONN_STLPORT_ENABLE)
-	SET(MYSQLCPPCONN_STLPORT_LIB "")
+    SET(MYSQLCPPCONN_STLPORT_LIB "")
 ENDIF(MYSQLCPPCONN_STLPORT_ENABLE)
 #
 # STLPORT - END
@@ -252,7 +260,7 @@ INSTALL(FILES ${CPACK_RESOURCE_FILE_README} ${CPACK_RESOURCE_FILE_INSTALL} ${CPA
 
 SET(COMMON_IGNORE_FILES "/CMakeFiles/" "/Testing/" "/.bzr/" "_CPack_Packages/"
     ".cmake$" "~" ".swp" ".log" ".gz" ".directory$" "CMakeCache.txt" "Makefile"
-	"install_manifest.txt")
+    "install_manifest.txt")
 SET(PRJ_COMMON_IGNORE_FILES ${COMMON_IGNORE_FILES} "ANNOUNCEMENT_102_ALPHA" "ANNOUNCEMENT_103_ALPHA" "ANNOUNCEMENT_104_BETA" "ANNOUNCEMENT_105_GA" "ANNOUNCEMENT_110_GA" "ANNOUNCEMENT_111_GA" "ANNOUNCEMENT_DRAFT" )
 
 SET(CPACK_SOURCE_IGNORE_FILES ${PRJ_COMMON_IGNORE_FILES}  "./cppconn/config.h$" "./driver/nativeapi/binding_config.h$")
@@ -261,17 +269,17 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
 
 SET(MYSQLCPPCONN_GCOV_ENABLE 0 CACHE BOOL "gcov-enabled")
 IF(CMAKE_COMPILER_IS_GNUCC)
-	ADD_DEFINITIONS("-Wall -fPIC -Woverloaded-virtual")
-	IF (MYSQLCPPCONN_GCOV_ENABLE)
-		ADD_DEFINITIONS("-fprofile-arcs -ftest-coverage")
-	ENDIF (MYSQLCPPCONN_GCOV_ENABLE)
+    ADD_DEFINITIONS("-Wall -fPIC -Woverloaded-virtual")
+    IF (MYSQLCPPCONN_GCOV_ENABLE)
+        ADD_DEFINITIONS("-fprofile-arcs -ftest-coverage")
+    ENDIF (MYSQLCPPCONN_GCOV_ENABLE)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # SET(CPACK_*) before the INCLUDE(CPack)
 INCLUDE(CPack)
 
 IF(WIN32)
-	STRING(REGEX REPLACE "MYSQLCPPCONN" "MySQL/ConnectorCPP" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+    STRING(REGEX REPLACE "MYSQLCPPCONN" "MySQL/ConnectorCPP" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 ENDIF(WIN32)
 MESSAGE(STATUS "Installation path is: ${CMAKE_INSTALL_PREFIX}   (overwrite with -DCMAKE_INSTALL_PREFIX=/your/path)")
 
@@ -288,35 +296,35 @@ ADD_SUBDIRECTORY(test/CJUnitTestsPort)
 ADD_SUBDIRECTORY(test/unit)
 
 IF(DEFINED CMAKE_SYSTEM_NAME AND ${CMAKE_SYSTEM_NAME} STREQUAL "SunOS")
-	# see also README
-	IF(${CMAKE_C_COMPILER} MATCHES "gcc$")
-		message("NOTE")
-		message("You seem to be using GCC on SunOS.")
-		message("This is not recommended. Compilation")
-		message("might fail due to compile flags")
-		message("returned by the MySQL tool mysql_config.")
-		message("In case of an error, try commenting out:")
-		message("# ADD_DEFINITIONS(\"\${MYSQL_CXXFLAGS}\")")
-		message("in the file FindMySQL.cm")
-	ENDIF(${CMAKE_C_COMPILER} MATCHES "gcc$")
+    # see also README
+    IF(${CMAKE_C_COMPILER} MATCHES "gcc$")
+        message("NOTE")
+        message("You seem to be using GCC on SunOS.")
+        message("This is not recommended. Compilation")
+        message("might fail due to compile flags")
+        message("returned by the MySQL tool mysql_config.")
+        message("In case of an error, try commenting out:")
+        message("# ADD_DEFINITIONS(\"\${MYSQL_CXXFLAGS}\")")
+        message("in the file FindMySQL.cm")
+    ENDIF(${CMAKE_C_COMPILER} MATCHES "gcc$")
 
-	IF(${CMAKE_C_COMPILER} MATCHES "gcc$")
-		IF(${CMAKE_CXX_COMPILER} MATCHES "CC$")
-			message("NOTE")
-			message("You seem to be using the GCC C-compiler")
-			message("together with the Sun CC C++-compiler.")
-			message("Linking of the resulting binaries")
-			message("might fail. In case of an error,")
-			message("try using Sun compilers only")
-		ENDIF(${CMAKE_CXX_COMPILER} MATCHES "CC$")
-	ELSEIF(${CMAKE_C_COMPILER} MATCHES "cc$" AND ${CMAKE_CXX_COMPILER} MATCHES "[c|g]\\+\\+$")
-		message("NOTE")
-		message("You seem to be using the GCC C-compiler")
-		message("together with the Sun CC C++-compiler.")
-		message("Linking of the resulting binaries")
-		message("might fail. In case of an error,")
-		message("try using Sun compilers only")
-	ENDIF(${CMAKE_C_COMPILER} MATCHES "gcc$")
+    IF(${CMAKE_C_COMPILER} MATCHES "gcc$")
+        IF(${CMAKE_CXX_COMPILER} MATCHES "CC$")
+            message("NOTE")
+            message("You seem to be using the GCC C-compiler")
+            message("together with the Sun CC C++-compiler.")
+            message("Linking of the resulting binaries")
+            message("might fail. In case of an error,")
+            message("try using Sun compilers only")
+        ENDIF(${CMAKE_CXX_COMPILER} MATCHES "CC$")
+    ELSEIF(${CMAKE_C_COMPILER} MATCHES "cc$" AND ${CMAKE_CXX_COMPILER} MATCHES "[c|g]\\+\\+$")
+        message("NOTE")
+        message("You seem to be using the GCC C-compiler")
+        message("together with the Sun CC C++-compiler.")
+        message("Linking of the resulting binaries")
+        message("might fail. In case of an error,")
+        message("try using Sun compilers only")
+    ENDIF(${CMAKE_C_COMPILER} MATCHES "gcc$")
 ENDIF(DEFINED CMAKE_SYSTEM_NAME AND ${CMAKE_SYSTEM_NAME} STREQUAL "SunOS")
 
 INSTALL(FILES "BUILDINFO" DESTINATION . OPTIONAL)
