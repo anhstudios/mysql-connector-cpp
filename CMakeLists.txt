@@ -28,6 +28,9 @@ PROJECT(MYSQLCPPCONN)
 # Bump this every time we change the API/ABI
 SET(MYSQLCPPCONN_SOVERSION "6")
 
+# Set C++ compiler version
+set(CMAKE_CXX_STANDARD 14)
+
 
 IF(WIN32)
 # We need this for mysqlcppconn_EXPORTS needed for the static build
